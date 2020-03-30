@@ -1,0 +1,72 @@
+{
+  "boards": [
+    {
+      "id": 1,
+      "title": "Board 1"
+    }
+  ],
+  "lists": [
+    {
+      "id": 1,
+      "boardId": 1,
+      "title": "Todo"
+    },
+    {
+      "id": 2,
+      "boardId": 1,
+      "title": "Doing"
+    },
+    {
+      "id": 3,
+      "boardId": 1,
+      "title": "Done"
+    }
+  ],
+  "cards": [
+    {
+      "id": 1,
+      "title": "item1",
+      "listId": 1
+    },
+    {
+      "id": 2,
+      "title": "item2",
+      "listId": 1
+    },
+    {
+      "id": 3,
+      "title": "item3",
+      "listId": 1
+    },
+    {
+      "id": 4,
+      "title": "item1",
+      "listId": 2
+    },
+    {
+      "id": 5,
+      "title": "item2",
+      "listId": 2
+    },
+    {
+      "id": 6,
+      "title": "item3",
+      "listId": 2
+    },
+    {
+      "id": 7,
+      "title": "item1",
+      "listId": 3
+    },
+    {
+      "id": 8,
+      "title": "item2",
+      "listId": 3
+    },
+    {
+      "id": 9,
+      "title": "item3",
+      "listId": 3
+    }
+  ]
+}
