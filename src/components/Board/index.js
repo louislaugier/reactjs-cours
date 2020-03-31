@@ -1,23 +1,25 @@
 import React, { useState, useEffect } from "react";
 import List from "../List";
 import { useMemo } from "react";
+import { useContext } from "react";
+import BoardContext from "../../context/board";
 
 function Board({id, title}) {
-  const [sLists, setSLists] = useState([]);
+  const [, setSLists] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const {actions, selectors} = useContext(BoardContext);
+  
+  const sLists = selectors.getLists({id});
+  console.log("slists", sLists);
+  
   // ComponentDidUpdate
   useEffect(
     function() {
       console.log("Board mounted")
 
-      fetch("http://localhost:3004/boards/" + id + "/lists")
-      .then(response => response.json())
-      .then(data => {
-        setLoading(false);
-        setSLists(data);
-      })
+      actions.fetchLists({id});
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [id]
   );
 
@@ -81,10 +83,10 @@ function Board({id, title}) {
       console.log("useMemo", sLists);
       return <>
       {
-        sLists.map(item => <>
+        sLists.map(item => <React.Fragment key={item.title}>
             <p>Items: {item.count === undefined ? '...' : item.count}</p>
-            <List /*addToList={addToList}*/ onCardsCountChange={onCardsCountChange} key={item.title} id={item.id} title={item.title}/>
-          </>
+            <List /*addToList={addToList}*/ onCardsCountChange={onCardsCountChange} list={item}/>
+          </React.Fragment>
         )
       }
       </>
@@ -98,8 +100,7 @@ function Board({id, title}) {
         <h1>{title}</h1>
       </div>
       <div className="body">
-        {!loading && mlists}
-        {loading && <p>Loading...</p>}
+        {mlists}
       </div>
     </>
   );

@@ -1,41 +1,35 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, useContext } from "react";
 import AddItem from "../AddItem";
 import Card from "../Card";
+import BoardContext from "../../context/board";
 
-function List({id, title, onCardsCountChange}) {
-  const [items, setItems] = useState([]);
+function List({list, onCardsCountChange}) {
   const [filter, setFilter] = useState("");
-  const [loading, setLoading] = useState(true);
-  
+  const {actions, selectors} = useContext(BoardContext);
+  const items = selectors.getCards(list);
   // ComponentDidUpdate
   useEffect(
     function() {
       console.log("List updated")
       
-      fetch("http://localhost:3004/lists/" + id + "/cards")
-      .then(response => response.json())
-      .then(data => {
-        setLoading(false);
-        onCardsCountChange(id, data.length);
-        setItems(data);
-      })
+      actions.fetchCards(list)
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [id]
+    [list.id]
   );
 
   const cards = useMemo(
     function() {
-      console.log('Cards computed', title);
+      console.log('Cards computed', list.id, list.cards, items);
       return <ul>
         {
           items
             .filter(item => item.title.indexOf(filter) !== -1)
-            .map((item, index) => <Card key={index.id} title={item.title}/>)
+            .map((item) => <Card key={item.id} title={item.title}/>)
         }
       </ul>;
     },
-    [filter, items, title]
+    [filter, items, list.cards, list.id]
   );
 
   const onSubmit = (value) => {
@@ -46,23 +40,22 @@ function List({id, title, onCardsCountChange}) {
       },
       body: JSON.stringify({
         title: value,
-        listId: id
+        listId: list.id
       })
     })
     .then(response => response.json())
     .then(data => {
       const cards = [...items, data];
-      onCardsCountChange(id, cards.length);
-      setItems(cards);
+      onCardsCountChange(list.id, cards.length);
+      //setItems(cards);
     });
   }
 
   return (
     <>
-      <h2>{title}</h2>
+      <h2>{list.title}</h2>
       <input value={filter} onChange={(event)=> setFilter(event.currentTarget.value)}/>
-      {!loading && cards}
-      {loading && <p>Loading...</p>}
+      {cards}
       <AddItem onSubmit={onSubmit}/>
     </>
   );
