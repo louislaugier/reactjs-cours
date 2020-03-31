@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
-import BoardContext from "../../context/board";
 
-function Card({title, list}) {  
+function Card({title}) {  
 
   // ComponentDidMount
   useEffect(

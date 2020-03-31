@@ -3,16 +3,16 @@ import AddItem from "../AddItem";
 import Card from "../Card";
 import BoardContext from "../../context/board";
 
-function List({list, onCardsCountChange}) {
+function List({list}) {
   const [filter, setFilter] = useState("");
   const {actions, selectors} = useContext(BoardContext);
+  
   const items = selectors.getCards(list);
+
   // ComponentDidUpdate
   useEffect(
     function() {
-      console.log("List updated")
-      
-      actions.fetchCards(list)
+      actions.fetchCards(list);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [list.id]
@@ -20,7 +20,6 @@ function List({list, onCardsCountChange}) {
 
   const cards = useMemo(
     function() {
-      console.log('Cards computed', list.id, list.cards, items);
       return <ul>
         {
           items
@@ -29,25 +28,13 @@ function List({list, onCardsCountChange}) {
         }
       </ul>;
     },
-    [filter, items, list.cards, list.id]
+    [filter, items]
   );
 
   const onSubmit = (value) => {
-    fetch("http://localhost:3004/cards", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        title: value,
-        listId: list.id
-      })
-    })
-    .then(response => response.json())
-    .then(data => {
-      const cards = [...items, data];
-      onCardsCountChange(list.id, cards.length);
-      //setItems(cards);
+    actions.addCard({
+      title: value,
+      listId: list.id
     });
   }
 
