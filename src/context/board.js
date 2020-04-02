@@ -62,6 +62,7 @@ export const BoardProvider = function({children}) {
 
   const selectors = {
     getBoards: () => state.boards,
+    getBoard: (id) => state.boards.find(board => console.log(board.id === id) || board.id === id),
     isLoading: () => state.loading,
     getLists: (_board) => state.lists.filter(list => list.boardId === _board.id) || [],
     getCards: (_list) => state.lists.find(list => list.id === _list.id).cards || [],

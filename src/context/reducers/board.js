@@ -4,50 +4,50 @@ export const initialState = {
     loading: true
   };
   
-export function reducer (state, action) {
+  export function reducer (state, action) {
     switch(action.type) {
-        case "RECEIVE_BOARDS":
+      case "RECEIVE_BOARDS":
         return {
-            ...state,
-            boards: action.payload.data,
-            loading: false
+          ...state,
+          boards: action.payload.data,
+          loading: false
         }
-        case "RECEIVE_LISTS":
+      case "RECEIVE_LISTS":
         return {
-            ...state,
-            lists: action.payload.lists
+          ...state,
+          lists: action.payload.lists
         }
-        case "RECEIVE_CARDS":
-            return {
+      case "RECEIVE_CARDS":
+          return {
             ...state,
             lists: state.lists.map(list => {
-                if (list.id === action.payload.list.id) {
+              if (list.id === action.payload.list.id) {
                 list = {
-                    ...list,
-                    cards: action.payload.cards
+                  ...list,
+                  cards: action.payload.cards
                 };
-                }
-                return list;
+              }
+              return list;
             })
-            }
-        case "RECEIVE_NEW_CARD":
+          }
+      case "RECEIVE_NEW_CARD":
         return {
-            ...state,
-            lists: state.lists.map(list => {
-                if (list.id === action.payload.card.listId) {
+          ...state,
+          lists: state.lists.map(list => {
+              if (list.id === action.payload.card.listId) {
                 list = {
-                    ...list,
-                    cards: [
+                  ...list,
+                  cards: [
                     ...list.cards, 
                     action.payload.card
-                    ]
+                  ]
                 };
-                }
-        
-                return list;
-            })
+              }
+      
+              return list;
+          })
         }
-        default:
+      default:
         return state;
     }
-}
+  }

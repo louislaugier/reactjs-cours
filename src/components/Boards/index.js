@@ -4,9 +4,9 @@ import { useMemo } from "react";
 import { useContext } from "react";
 import BoardContext from "../../context/board";
 
-function Board({match}) {
+function Board({id, title}) {
   const {actions, selectors} = useContext(BoardContext);
-  const {id, title} = selectors.getBoard(parseInt(match.params.id));
+  
   const sLists = selectors.getLists({id});
   
   // ComponentDidUpdate
